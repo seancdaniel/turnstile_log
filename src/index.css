@@ -96,7 +96,8 @@ img {
 }
 
 .sign-in-button,
-.sign-out-button {
+.sign-out-button,
+.profile-button {
   background: rgba(255, 255, 255, 0.2);
   color: inherit;
   border: 1px solid rgba(255, 255, 255, 0.4);
@@ -112,7 +113,9 @@ img {
 .sign-in-button:hover,
 .sign-in-button:focus-visible,
 .sign-out-button:hover,
-.sign-out-button:focus-visible {
+.sign-out-button:focus-visible,
+.profile-button:hover,
+.profile-button:focus-visible {
   background: rgba(255, 255, 255, 0.3);
   border-color: rgba(255, 255, 255, 0.8);
   transform: translateY(-1px);
@@ -147,6 +150,38 @@ img {
   margin: 0 0 1rem;
   font-size: 1.2rem;
   color: #1d2433;
+}
+
+.auth-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+}
+
+.auth-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  transition: color 0.2s ease, border-bottom 0.2s ease;
+  position: relative;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -0.5rem;
+}
+
+.auth-tab:hover {
+  color: #1c6dd0;
+}
+
+.auth-tab.is-active {
+  color: #1c6dd0;
+  border-bottom-color: #1c6dd0;
 }
 
 .sign-in-form .input-group {
@@ -416,6 +451,99 @@ main {
 .clear-data-button:focus-visible {
   background: rgba(229, 231, 235, 0.12);
   transform: translateY(-1px);
+}
+
+.profile-section {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.profile-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.stat-card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 14px 34px rgba(17, 33, 60, 0.08);
+  text-align: center;
+}
+
+.stat-card h3 {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  color: #47516a;
+  font-weight: 600;
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0;
+  color: #1c6dd0;
+  line-height: 1;
+}
+
+.stat-label {
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.park-breakdown {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 14px 34px rgba(17, 33, 60, 0.08);
+  margin-bottom: 2rem;
+}
+
+.park-breakdown h3 {
+  margin: 0 0 1.5rem;
+  font-size: 1.5rem;
+}
+
+.park-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.park-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f5f6fb;
+  border-radius: 12px;
+}
+
+.park-item strong {
+  display: block;
+  font-size: 1rem;
+  color: #1d2433;
+  margin-bottom: 0.25rem;
+}
+
+.park-resort {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.park-visits {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1c6dd0;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 720px) {

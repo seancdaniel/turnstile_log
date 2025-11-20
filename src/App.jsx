@@ -4,7 +4,7 @@ import disneyCastle from "./assets/disney-castle.svg";
 import universalGlobe from "./assets/universal-globe.svg";
 
 const STORAGE_KEY = "passholder-park-tracker";
-const SECTION_KEYS = ["home", "disney", "universal"];
+const SECTION_KEYS = ["home", "disney", "universal", "profile"];
 
 const RESORTS = {
   disney: {
@@ -262,6 +262,102 @@ const HeroSection = ({ onNavigate }) => (
   </div>
 );
 
+const ProfileSection = ({ state, leaderboards, onNavigate }) => {
+  const userStats = useMemo(() => {
+    const allPassholders = {
+      ...(state.disney?.passholders ?? {}),
+      ...(state.universal?.passholders ?? {}),
+    };
+    
+    const totalVisits = Object.values(allPassholders).reduce((sum, stats) => sum + (stats.total ?? 0), 0);
+    const disneyVisits = Object.values(state.disney?.passholders ?? {}).reduce((sum, stats) => sum + (stats.total ?? 0), 0);
+    const universalVisits = Object.values(state.universal?.passholders ?? {}).reduce((sum, stats) => sum + (stats.total ?? 0), 0);
+    
+    const parkBreakdown = {};
+    Object.values(RESORTS).forEach((resort) => {
+      Object.entries(resort.parks).forEach(([parkId, parkName]) => {
+        parkBreakdown[parkId] = {
+          name: parkName,
+          visits: 0,
+          resort: resort.label,
+        };
+      });
+    });
+    
+    Object.values(allPassholders).forEach((stats) => {
+      Object.entries(stats.parks ?? {}).forEach(([parkId, visits]) => {
+        if (parkBreakdown[parkId]) {
+          parkBreakdown[parkId].visits += visits;
+        }
+      });
+    });
+    
+    return {
+      totalVisits,
+      disneyVisits,
+      universalVisits,
+      parkBreakdown: Object.values(parkBreakdown).filter((p) => p.visits > 0),
+    };
+  }, [state]);
+
+  return (
+    <div className="profile-section">
+      <div className="section-intro">
+        <div>
+          <h2 id="profile-heading">Your Profile</h2>
+          <p>View your visit statistics and park history</p>
+        </div>
+      </div>
+
+      <div className="profile-stats-grid">
+        <div className="stat-card">
+          <h3>Total Visits</h3>
+          <p className="stat-number">{userStats.totalVisits}</p>
+          <p className="stat-label">Across all parks</p>
+        </div>
+        <div className="stat-card">
+          <h3>Disney World</h3>
+          <p className="stat-number">{userStats.disneyVisits}</p>
+          <p className="stat-label">Total visits</p>
+        </div>
+        <div className="stat-card">
+          <h3>Universal Orlando</h3>
+          <p className="stat-number">{userStats.universalVisits}</p>
+          <p className="stat-label">Total visits</p>
+        </div>
+      </div>
+
+      {userStats.parkBreakdown.length > 0 && (
+        <div className="park-breakdown">
+          <h3>Park Breakdown</h3>
+          <div className="park-list">
+            {userStats.parkBreakdown
+              .sort((a, b) => b.visits - a.visits)
+              .map((park) => (
+                <div key={park.name} className="park-item">
+                  <div>
+                    <strong>{park.name}</strong>
+                    <span className="park-resort">{park.resort}</span>
+                  </div>
+                  <span className="park-visits">{park.visits} visits</span>
+                </div>
+              ))}
+          </div>
+        </div>
+      )}
+
+      <div className="profile-actions">
+        <button className="action-button" type="button" onClick={() => onNavigate("disney")}>
+          Log Disney Visit
+        </button>
+        <button className="action-button secondary" type="button" onClick={() => onNavigate("universal")}>
+          Log Universal Visit
+        </button>
+      </div>
+    </div>
+  );
+};
+
 export default function App() {
   const [state, setState] = useState(() => loadState());
   const [activeSection, setActiveSection] = useState(() => {
@@ -270,6 +366,7 @@ export default function App() {
   });
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [showSignInForm, setShowSignInForm] = useState(false);
+  const [isCreateAccount, setIsCreateAccount] = useState(false);
   const sectionRefs = useRef({});
 
   useEffect(() => {
@@ -345,10 +442,20 @@ export default function App() {
   const handleSignIn = () => {
     setIsSignedIn(true);
     setShowSignInForm(false);
+    setIsCreateAccount(false);
+  };
+
+  const handleCreateAccount = () => {
+    setIsSignedIn(true);
+    setShowSignInForm(false);
+    setIsCreateAccount(false);
   };
 
   const handleSignOut = () => {
     setIsSignedIn(false);
+    if (activeSection === "profile") {
+      handleNavigate("home");
+    }
   };
 
   return (
@@ -363,7 +470,7 @@ export default function App() {
         </div>
         <div className="header-right">
           <nav className="site-nav" aria-label="Primary">
-            {SECTION_KEYS.map((section) => (
+            {SECTION_KEYS.filter((section) => section !== "profile").map((section) => (
               <button
                 key={section}
                 className={`nav-link${activeSection === section ? " is-active" : ""}`}
@@ -378,6 +485,9 @@ export default function App() {
           <div className="sign-in-area">
             {isSignedIn ? (
               <div className="user-menu">
+                <button className="profile-button" type="button" onClick={() => handleNavigate("profile")}>
+                  Profile
+                </button>
                 <span className="user-greeting">Welcome back!</span>
                 <button className="sign-out-button" type="button" onClick={handleSignOut}>
                   Sign Out
@@ -390,18 +500,57 @@ export default function App() {
             )}
             {showSignInForm && !isSignedIn && (
               <div className="sign-in-form">
-                <h4>Sign In</h4>
-                <form onSubmit={(e) => { e.preventDefault(); handleSignIn(); }}>
-                  <label className="input-group">
-                    <span>Email</span>
-                    <input type="email" placeholder="your@email.com" required />
-                  </label>
-                  <label className="input-group">
-                    <span>Password</span>
-                    <input type="password" placeholder="••••••••" required />
-                  </label>
-                  <button type="submit" className="submit-button">Sign In</button>
-                </form>
+                <div className="auth-tabs">
+                  <button
+                    type="button"
+                    className={`auth-tab${!isCreateAccount ? " is-active" : ""}`}
+                    onClick={() => setIsCreateAccount(false)}
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    type="button"
+                    className={`auth-tab${isCreateAccount ? " is-active" : ""}`}
+                    onClick={() => setIsCreateAccount(true)}
+                  >
+                    Create Account
+                  </button>
+                </div>
+                {!isCreateAccount ? (
+                  <form onSubmit={(e) => { e.preventDefault(); handleSignIn(); }}>
+                    <h4>Sign In</h4>
+                    <label className="input-group">
+                      <span>Email</span>
+                      <input type="email" placeholder="your@email.com" required />
+                    </label>
+                    <label className="input-group">
+                      <span>Password</span>
+                      <input type="password" placeholder="••••••••" required />
+                    </label>
+                    <button type="submit" className="submit-button">Sign In</button>
+                  </form>
+                ) : (
+                  <form onSubmit={(e) => { e.preventDefault(); handleCreateAccount(); }}>
+                    <h4>Create Account</h4>
+                    <label className="input-group">
+                      <span>Name</span>
+                      <input type="text" placeholder="Your name" required />
+                    </label>
+                    <label className="input-group">
+                      <span>Email</span>
+                      <input type="email" placeholder="your@email.com" required />
+                    </label>
+                    <label className="input-group">
+                      <span>Password</span>
+                      <input type="password" placeholder="••••••••" required minLength="8" />
+                    </label>
+                    <label className="input-group">
+                      <span>Confirm Password</span>
+                      <input type="password" placeholder="••••••••" required minLength="8" />
+                    </label>
+                    <button type="submit" className="submit-button">Create Account</button>
+                  </form>
+                )}
               </div>
             )}
           </div>
@@ -464,6 +613,21 @@ export default function App() {
             </section>
           );
         })}
+
+        {isSignedIn && (
+          <section
+            ref={(node) => {
+              sectionRefs.current.profile = node ?? undefined;
+            }}
+            id="profile"
+            className={`page-section${activeSection === "profile" ? " is-visible" : ""}`}
+            aria-hidden={activeSection !== "profile"}
+            tabIndex={-1}
+            aria-labelledby="profile-heading"
+          >
+            <ProfileSection state={state} leaderboards={leaderboards} onNavigate={handleNavigate} />
+          </section>
+        )}
       </main>
 
       <footer className="site-footer">
