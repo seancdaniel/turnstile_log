@@ -1,0 +1,22 @@
+<svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Globe base -->
+  <circle cx="36" cy="36" r="28" fill="#1C6DD0"/>
+  
+  <!-- Latitude lines -->
+  <ellipse cx="36" cy="20" rx="20" ry="6" stroke="#0B3D91" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <ellipse cx="36" cy="36" rx="24" ry="8" stroke="#0B3D91" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <ellipse cx="36" cy="52" rx="20" ry="6" stroke="#0B3D91" stroke-width="1.5" fill="none" opacity="0.6"/>
+  
+  <!-- Longitude lines -->
+  <path d="M36 8 Q46 20, 36 36 Q26 20, 36 8" stroke="#0B3D91" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <path d="M36 8 Q56 20, 56 36 Q56 52, 36 64 Q16 52, 16 36 Q16 20, 36 8" stroke="#0B3D91" stroke-width="1.5" fill="none" opacity="0.6"/>
+  <path d="M36 64 Q26 52, 36 36 Q46 52, 36 64" stroke="#0B3D91" stroke-width="1.5" fill="none" opacity="0.6"/>
+  
+  <!-- Continents/landmasses -->
+  <path d="M20 28 Q28 24, 36 26 Q44 24, 52 28 Q50 34, 48 38 Q44 40, 40 38 Q36 36, 32 38 Q28 40, 24 38 Q22 34, 20 28 Z" fill="#4A9F5F" opacity="0.7"/>
+  <path d="M16 44 Q20 42, 24 44 Q28 46, 32 48 Q36 50, 40 48 Q44 46, 48 44 Q50 48, 48 52 Q44 54, 40 52 Q36 50, 32 52 Q28 54, 24 52 Q20 50, 16 48 Q14 46, 16 44 Z" fill="#4A9F5F" opacity="0.7"/>
+  
+  <!-- Outer circle border -->
+  <circle cx="36" cy="36" r="28" stroke="#0B3D91" stroke-width="2.5"/>
+</svg>
+
