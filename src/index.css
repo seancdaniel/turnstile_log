@@ -1,6 +1,11 @@
 :root {
   color-scheme: light;
-  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family:
+    'Poppins',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
     sans-serif;
   line-height: 1.6;
   background-color: #f5f6fb;
@@ -77,7 +82,10 @@ img {
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .nav-link:hover,
@@ -106,7 +114,10 @@ img {
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
   white-space: nowrap;
 }
 
@@ -169,7 +180,9 @@ img {
   font-weight: 600;
   color: #6b7280;
   cursor: pointer;
-  transition: color 0.2s ease, border-bottom 0.2s ease;
+  transition:
+    color 0.2s ease,
+    border-bottom 0.2s ease;
   position: relative;
   border-bottom: 2px solid transparent;
   margin-bottom: -0.5rem;
@@ -198,7 +211,8 @@ img {
 }
 
 main {
-  padding: clamp(1.5rem, 4vw, 3.5rem) clamp(1rem, 5vw, 4rem) clamp(6rem, 10vw, 8rem);
+  padding: clamp(1.5rem, 4vw, 3.5rem) clamp(1rem, 5vw, 4rem)
+    clamp(6rem, 10vw, 8rem);
   display: grid;
   gap: clamp(2rem, 4vw, 3.5rem);
 }
@@ -250,7 +264,9 @@ main {
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .action-button.secondary {
@@ -336,7 +352,9 @@ main {
   font-size: 0.95rem;
   font-family: inherit;
   background: #f9faff;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .input-group input:focus,
@@ -356,7 +374,9 @@ main {
   font-weight: 600;
   cursor: pointer;
   width: 100%;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .submit-button:hover,
@@ -444,7 +464,9 @@ main {
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .clear-data-button:hover,
@@ -456,6 +478,26 @@ main {
 .profile-section {
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.profile-header {
+  align-items: center;
+}
+
+.profile-layout {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+}
+
+.profile-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.profile-sidebar {
+  position: relative;
 }
 
 .profile-stats-grid {
@@ -546,6 +588,181 @@ main {
   flex-wrap: wrap;
 }
 
+.profile-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 1.75rem;
+  box-shadow: 0 18px 45px rgba(31, 50, 94, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.profile-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.profile-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #1c6dd0;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  overflow: hidden;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.edit-profile-button {
+  border: 1px solid rgba(28, 109, 208, 0.3);
+  background: rgba(28, 109, 208, 0.1);
+  color: #1c6dd0;
+  border-radius: 12px;
+  padding: 0.45rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.edit-profile-button:hover,
+.edit-profile-button:focus-visible {
+  background: rgba(28, 109, 208, 0.2);
+  border-color: rgba(28, 109, 208, 0.6);
+}
+
+.profile-info {
+  margin: 0;
+}
+
+.profile-info-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #edf0f7;
+}
+
+.profile-info-row:last-of-type {
+  border-bottom: none;
+}
+
+.profile-info-row dt {
+  margin: 0;
+  font-weight: 600;
+  color: #47516a;
+}
+
+.profile-info-row dd {
+  margin: 0;
+  color: #1d2433;
+  font-weight: 500;
+}
+
+.profile-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.profile-form .submit-button {
+  margin-top: 0.5rem;
+}
+
+.readonly-input {
+  border: 1px dashed #c5c9d8;
+  border-radius: 12px;
+  padding: 0.65rem 0.85rem;
+  background: #f4f6fb;
+  font-weight: 600;
+  color: #1d2433;
+}
+
+.ride-randomizer-card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 14px 34px rgba(17, 33, 60, 0.08);
+  margin-bottom: 2rem;
+}
+
+.ride-randomizer-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  color: #1d2433;
+}
+
+.ride-randomizer-description {
+  margin: 0 0 1.5rem;
+  color: #47516a;
+  font-size: 0.95rem;
+}
+
+.ride-randomizer-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.ride-randomizer-form .action-button {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.ride-randomizer-form .action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.ride-randomizer-form .action-button:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.random-ride-result {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f4a261, #e76f51);
+  border-radius: 16px;
+  text-align: center;
+  color: #ffffff;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.random-ride-label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.random-ride-name {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  line-height: 1.2;
+}
+
+.random-ride-park {
+  font-size: 1rem;
+  opacity: 0.85;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
 @media (max-width: 720px) {
   .site-header {
     justify-content: center;
@@ -572,6 +789,14 @@ main {
     right: auto;
     left: 50%;
     transform: translateX(-50%);
+  }
+
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-sidebar {
+    order: -1;
   }
 }
 
@@ -600,5 +825,3 @@ main {
     transform: translateY(0);
   }
 }
-
-

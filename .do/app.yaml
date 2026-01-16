@@ -25,4 +25,3 @@ services:
         build_command: npm install && npm run build
         output_dir: dist
         catchall_document: index.html
-

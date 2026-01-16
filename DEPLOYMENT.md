@@ -15,6 +15,7 @@ This is the simplest method and handles everything automatically.
 ### Step 1: Prepare Your Repository
 
 1. **Initialize Git** (if not already done):
+
    ```bash
    git init
    git add .
@@ -64,6 +65,7 @@ This is the simplest method and handles everything automatically.
 ### Step 3: Update app.yaml (Optional)
 
 If you want to use the `app.yaml` file for configuration:
+
 1. Update `.do/app.yaml` with your GitHub username
 2. Commit and push the changes
 3. DigitalOcean will automatically detect and use it
@@ -167,6 +169,7 @@ server {
 ```
 
 Enable the site:
+
 ```bash
 sudo ln -s /etc/nginx/sites-available/passholder-tracker /etc/nginx/sites-enabled/
 sudo nginx -t
@@ -200,13 +203,16 @@ If you need to add environment variables later (for API keys, etc.):
 ## Updating Your App
 
 ### App Platform:
+
 - Just push to GitHub, and it auto-deploys!
 
 ### Spaces:
+
 - Rebuild: `npm run build`
 - Re-upload the `dist` folder
 
 ### Droplet:
+
 ```bash
 cd passholder-tracker
 git pull
@@ -226,4 +232,3 @@ pm2 restart passholder-tracker
 - [DigitalOcean Documentation](https://docs.digitalocean.com/)
 - [App Platform Docs](https://docs.digitalocean.com/products/app-platform/)
 - [Community Tutorials](https://www.digitalocean.com/community/tags/app-platform)
-
