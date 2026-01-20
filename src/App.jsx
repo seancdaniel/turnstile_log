@@ -1086,7 +1086,7 @@ export default function App() {
         <div className="brand">
           <img src={magicCompass} alt="" aria-hidden="true" />
           <div>
-            <h1>Passholder Park Tracker</h1>
+            <h1>Turnstile Log</h1>
             <p>Where adventures become friendly competition</p>
           </div>
         </div>
