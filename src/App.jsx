@@ -222,7 +222,7 @@ const computeLeaderboards = (passholders = {}) => {
   return { overall, byPark };
 };
 
-const VisitForm = ({ resortLabel, parks, onSubmit, currentUserName }) => {
+const VisitForm = ({ resortLabel, parks, onSubmit, currentUserName, isSignedIn, onSignInClick }) => {
   const parkKeys = Object.keys(parks);
   const [name, setName] = useState(currentUserName ?? '');
   const [park, setPark] = useState(parkKeys[0] ?? '');
@@ -245,6 +245,11 @@ const VisitForm = ({ resortLabel, parks, onSubmit, currentUserName }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!isSignedIn) {
+      alert('Please sign in to log visits');
+      onSignInClick?.();
+      return;
+    }
     if (!park) {
       return;
     }
@@ -267,7 +272,19 @@ const VisitForm = ({ resortLabel, parks, onSubmit, currentUserName }) => {
       aria-labelledby={`${resortLabel}-form-heading`}
     >
       <h3 id={`${resortLabel}-form-heading`}>Log a Visit</h3>
-      <form className="visit-form" onSubmit={handleSubmit}>
+      {!isSignedIn ? (
+        <div className="signin-prompt">
+          <p>Sign in to your account to log visits.</p>
+          <button
+            type="button"
+            className="submit-button"
+            onClick={onSignInClick}
+          >
+            Sign In / Create Account
+          </button>
+        </div>
+      ) : (
+        <form className="visit-form" onSubmit={handleSubmit}>
         {!isReadOnlyName && (
           <label className="input-group">
             <span>Passholder Name</span>
@@ -324,6 +341,7 @@ const VisitForm = ({ resortLabel, parks, onSubmit, currentUserName }) => {
           Save Visit
         </button>
       </form>
+      )}
     </section>
   );
 };
@@ -940,9 +958,20 @@ export default function App() {
     const hash = window.location.hash.replace('#', '');
     return SECTION_KEYS.includes(hash) ? hash : 'home';
   });
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isSignedIn, setIsSignedIn] = useState(() => {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (!stored) return false;
+    try {
+      const parsed = JSON.parse(stored);
+      return parsed.profile?.name?.trim().length > 0;
+    } catch {
+      return false;
+    }
+  });
   const [showSignInForm, setShowSignInForm] = useState(false);
   const [isCreateAccount, setIsCreateAccount] = useState(false);
+  const [accountName, setAccountName] = useState('');
+  const [accountEmail, setAccountEmail] = useState('');
   const sectionRefs = useRef({});
 
   useEffect(() => {
@@ -1062,19 +1091,54 @@ export default function App() {
   };
 
   const handleSignIn = () => {
+    if (!accountEmail.trim()) {
+      alert('Please enter your email');
+      return;
+    }
+    // Get the name from the profile if it exists
+    const nameToUse = state.profile?.name?.trim() || 'Passholder';
+    setState((previous) => ({
+      ...previous,
+      profile: {
+        ...previous.profile,
+        email: accountEmail,
+      },
+    }));
     setIsSignedIn(true);
     setShowSignInForm(false);
     setIsCreateAccount(false);
+    setAccountEmail('');
   };
 
   const handleCreateAccount = () => {
+    if (!accountName.trim()) {
+      alert('Please enter your name');
+      return;
+    }
+    if (!accountEmail.trim()) {
+      alert('Please enter your email');
+      return;
+    }
+    const normalizedName = normalizeName(accountName);
+    setState((previous) => ({
+      ...previous,
+      profile: {
+        ...previous.profile,
+        name: normalizedName,
+        email: accountEmail,
+      },
+    }));
     setIsSignedIn(true);
     setShowSignInForm(false);
     setIsCreateAccount(false);
+    setAccountName('');
+    setAccountEmail('');
   };
 
   const handleSignOut = () => {
     setIsSignedIn(false);
+    setAccountName('');
+    setAccountEmail('');
     if (activeSection === 'profile') {
       handleNavigate('home');
     }
@@ -1169,6 +1233,8 @@ export default function App() {
                       <input
                         type="email"
                         placeholder="your@email.com"
+                        value={accountEmail}
+                        onChange={(e) => setAccountEmail(e.target.value)}
                         required
                       />
                     </label>
@@ -1190,13 +1256,21 @@ export default function App() {
                     <h4>Create Account</h4>
                     <label className="input-group">
                       <span>Name</span>
-                      <input type="text" placeholder="Your name" required />
+                      <input
+                        type="text"
+                        placeholder="Your name"
+                        value={accountName}
+                        onChange={(e) => setAccountName(e.target.value)}
+                        required
+                      />
                     </label>
                     <label className="input-group">
                       <span>Email</span>
                       <input
                         type="email"
                         placeholder="your@email.com"
+                        value={accountEmail}
+                        onChange={(e) => setAccountEmail(e.target.value)}
                         required
                       />
                     </label>
@@ -1277,6 +1351,8 @@ export default function App() {
                   currentUserName={
                     isSignedIn && signedInName ? signedInName : ''
                   }
+                  isSignedIn={isSignedIn}
+                  onSignInClick={() => setShowSignInForm(true)}
                   onSubmit={(payload) => handleLogVisit(resortKey, payload)}
                 />
                 <Leaderboards
